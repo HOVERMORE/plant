@@ -84,5 +84,5 @@ public class SensorData {
      * 逻辑删除
      */
     @ApiModelProperty(value = "逻辑删除",required = false)
-    private Integer isDelete;
+    private Integer isDeleted;
 }

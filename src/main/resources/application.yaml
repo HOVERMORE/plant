@@ -12,18 +12,27 @@ spring:
     multipart:
       max-file-size: -1
       max-request-size: -1
+#  task:
+#    scheduling:
+#      fixedRate: 60000
 mybatis-plus:
     configuration:
 #      在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
       map-underscore-to-camel-case: true
 #      日志功能，查看MyBatis-Plus自动生成的sql语句
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     type-aliases-package: hc.mapper
     global-config:
       db-config:
         logic-delete-field: isDeleted
         logic-not-delete-value: 0
         logic-delete-value: 1
-video:
-  url: C:\Users\HOVER\Videos\开发
-  playUrl: http://192.168.2.54
+file:
+  video:
+    url: C:\Users\HOVER\Videos\开发
+    playUrl: http://192.168.2.54
+  userFile:
+    url: C:\Projects\Logs\plantFile\userFile
+  gptFile:
+    url: C:\Projects\Logs\plantFile\gptFile
+

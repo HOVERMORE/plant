@@ -13,4 +13,21 @@ public interface IVideoService extends IService<Video> {
      * @return
      */
     ResponseResult uploadVideo(MultipartFile multipartFile);
+
+    /**
+     * 获取视频链接
+     * @param videoId
+     * @return
+     */
+    ResponseResult playVideo(String videoId);
+
+    /**
+     * 获取所有视频
+     * @return
+     */
+    ResponseResult getAllVideo();
+    /**
+     * 每天执行一次删除任务
+     */
+    void timedDeleteVideo();
 }

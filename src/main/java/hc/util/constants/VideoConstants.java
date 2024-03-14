@@ -8,12 +8,12 @@ public class VideoConstants {
     public static String VIDEO_URL;
     public static String PLAY_URL;
 
-    @Value("${video.url}")
+    @Value("${file.video.url}")
     private void setVideoUrl(String videoUrl){
         VIDEO_URL=videoUrl;
     }
 
-    @Value("${video.playUrl}")
+    @Value("${file.video.playUrl}")
     private void setPlayUrl(String playUrl){
         PLAY_URL=playUrl;
     }

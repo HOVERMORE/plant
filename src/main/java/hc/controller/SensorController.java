@@ -22,6 +22,7 @@ import static hc.pojos.enums.HttpCodeEnum.NO_FOUND_PARAM;
 @RestController
 @RequestMapping("/sensor")
 @Api(value = "传感器数据", tags = "传感器管理")
+@CrossOrigin(origins = "*")
 @Slf4j
 public class SensorController {
     @Resource
@@ -35,7 +36,6 @@ public class SensorController {
      * @return
      */
     @PostMapping("/gather")
-    @CrossOrigin(origins = "*")
     @ApiOperation("传感器数据采集")
     public ResponseResult login(@RequestBody SensorDataDTO sensorDataDTO) {
         if (sensorDataDTO == null) {

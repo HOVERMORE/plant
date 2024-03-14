@@ -2,6 +2,9 @@ package hc.pojos.Respeonse;
 
 
 import hc.pojos.enums.HttpCodeEnum;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -11,11 +14,12 @@ import java.io.Serializable;
  * @param <T>
  */
 @ToString
+@Data
 public class ResponseResult<T> implements Serializable {
     private String msg;
 
-
     private Integer code;
+
     private T data;
 
     public ResponseResult(){
@@ -25,18 +29,18 @@ public class ResponseResult<T> implements Serializable {
         this.code=code;
         this.data=data;
     }
-    public ResponseResult(Integer code,String errorMsg,T data){
+    public ResponseResult(Integer code,String msg,T data){
         this.code=code;
-        this.msg=errorMsg;
+        this.msg=msg;
         this.data=data;
     }
-    public ResponseResult(Integer code,String errorMsg){
+    public ResponseResult(Integer code,String msg){
         this.code=code;
-        this.msg=errorMsg;
+        this.msg=msg;
     }
-    public static ResponseResult errorResult(Integer code,String errorMsg){
+    public static ResponseResult errorResult(Integer code,String msg){
         ResponseResult responseResult=new ResponseResult();
-        return responseResult.error(code,errorMsg);
+        return responseResult.error(code,msg);
     }
 
     public static ResponseResult errorResult(HttpCodeEnum enums){
@@ -65,10 +69,10 @@ public class ResponseResult<T> implements Serializable {
         return result;
     }
 
-    public ResponseResult<?> ok(Integer code, T data, String errorMsg) {
+    public ResponseResult<?> ok(Integer code, T data, String msg) {
         this.code=code;
         this.data=data;
-        this.msg=errorMsg;
+        this.msg=msg;
         return this;
     }
 
@@ -92,31 +96,4 @@ public class ResponseResult<T> implements Serializable {
     private static ResponseResult setAppHttpCodeEnum(HttpCodeEnum enums, String errorMsg) {
         return okResult(enums.getCode(),errorMsg);
     }
-
-
-
-    public String getErrorMsg() {
-        return msg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.msg = errorMsg;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
 }

@@ -11,7 +11,10 @@ public enum HttpCodeEnum {
     DATA_FAILURE(602,"数据过期"),
     FILE_CREATE_FAIL(700,"文件创建失败"),
     FILE_UPLOAD_FAIL(701,"文件上传失败"),
+    FILE_TEXT_FAIL(702,"文本保存失败"),
     JWT_VERIFICATION_ERROR(800,"jwt认证出错"),
+    GPT_API_FAIL(900,"gpt-api调用接口失败"),
+    GPT_RESPONSE_INVALID(901,"gpt回答失效"),
     UNKNOWN_ERROR(1000,"自定义类型");
 
 

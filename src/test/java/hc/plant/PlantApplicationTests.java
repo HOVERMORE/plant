@@ -2,13 +2,23 @@ package hc.plant;
 
 
 import hc.pojos.Logs;
+import hc.pojos.Respeonse.ResponseResult;
+import hc.pojos.Token;
+import hc.pojos.User;
 import hc.pojos.Video;
 import hc.pojos.enums.HttpCodeEnum;
-import hc.service.ILogsService;
-import hc.service.IVideoService;
+import hc.service.*;
+import hc.util.FileUtil;
+import hc.util.constants.GptConstants;
 import hc.util.constants.VideoConstants;
+import hc.util.thread.UserHolder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
@@ -19,14 +29,33 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @SpringBootTest
 class PlantApplicationTests {
     @Resource
+    private IUserService userService;
+    @Resource
     private IVideoService videoService;
     @Resource
     private ILogsService logsService;
+    @Resource
+    private ITokenService tokenService;
+    @Resource
+    private IGptApiService gptApiService;
+
+
+    @BeforeEach
+    public void setUser(){
+        User one = userService.query().eq("nick_name", "root").one();
+        UserHolder.setUser(one);
+    }
+    @AfterEach
+    public void cleanUser(){
+        UserHolder.clear();
+    }
+
     /**
      * 测试分块视频
      */
@@ -152,6 +181,23 @@ class PlantApplicationTests {
          */
 
         logsService.save(logs);
+    }
+    @Test
+    public void timedDelete() {
+        List<String> tokenIds = tokenService.query().lt("create_time", LocalDateTime.now().minusDays(7)).list()
+                .stream().map(Token::getId).collect(Collectors.toList());
+        tokenService.removeByIds(tokenIds);
+    }
+    @Test
+    public void saveGpt(){
+        gptApiService.saveChat("你好");
+    }
+    @Test
+    public void getGpt(){
+//        ResponseResult chat = gptApiService.getChat();
+////        System.out.println(chat);
+//        String s = FileUtil.saveText("111", "1111", GptConstants.USER_FILE);
+//        System.out.println(s);
     }
 
 }

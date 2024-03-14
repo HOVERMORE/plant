@@ -54,5 +54,5 @@ public class Logs {
     /**
      * 逻辑删除
      */
-    private Integer isDelete;
+    private Integer isDeleted;
 }

@@ -11,7 +11,9 @@ import hc.service.ILogsService;
 import hc.service.IVideoService;
 import hc.util.thread.UserHolder;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,13 +25,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/video")
 @Api(value="视频管理",tags="视频管理")
+@CrossOrigin(origins = "*")
 @Slf4j
 public class VideoController {
 
     @Resource
     private IVideoService videoService;
-    @Resource
-    private ILogsService logsService;
 
     /**
      * 视频上传
@@ -37,51 +38,24 @@ public class VideoController {
      * @return
      */
     @PostMapping("/upload")
-    @CrossOrigin(origins = "*")
     @ApiOperation("视频上传")
-    public ResponseResult uploadVideo(MultipartFile multipartFile){
-        if(multipartFile.isEmpty()||multipartFile.getSize()==0){
-            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            log.error(this.getClass().getSimpleName()+"."+stackTrace[1].getMethodName()+":"+"multipartFile参数缺失");
-            logsService.markLogs(HttpCodeEnum.NO_FOUND_PARAM,
-                    this.getClass().getSimpleName()+"."+stackTrace[1].getMethodName(),
-                    "multipartFile参数缺失",
-                    UserHolder.getUser().getNickName(), UserHolder.getUser().getId());
-            throw new ParamErrorException(HttpCodeEnum.NO_FOUND_PARAM);
-         }
+    public ResponseResult uploadVideo(@ApiParam(value = "上传文件", required = true)MultipartFile multipartFile){
         return videoService.uploadVideo(multipartFile);
     }
 
     /**
-     * 播放视频
+     * 获取视频链接
      * @param videoId
      * @return
      */
     @GetMapping("/playVideo")
-    @CrossOrigin(origins = "*")
-    @ApiOperation("播放视频")
+    @ApiOperation("获取视频链接")
     public ResponseResult  PlayVideo(@RequestParam String videoId){
-        if(StrUtil.isBlank(videoId)) {
-            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            log.error(this.getClass().getSimpleName()+"."+stackTrace[1].getMethodName()+":"+"videoId参数缺失");
-            logsService.markLogs(HttpCodeEnum.NO_FOUND_PARAM,
-                    this.getClass().getSimpleName()+"."+stackTrace[1].getMethodName(),
-                    "videoId参数缺失",
-                    UserHolder.getUser().getNickName(), UserHolder.getUser().getId());
-            throw new ParamErrorException(HttpCodeEnum.NO_FOUND_PARAM);
-        }
-        Video one = videoService.getById(videoId);
-        if(one == null){
-            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            log.error(this.getClass().getSimpleName()+"."+stackTrace[1].getMethodName()+":"+"video未查询到结果");
-            logsService.markLogs(HttpCodeEnum.DATA_NOT_EXIST,
-                    this.getClass().getSimpleName()+"."+stackTrace[1].getMethodName(),
-                    "video未查询到结果",
-                    UserHolder.getUser().getNickName(), UserHolder.getUser().getId());
-            throw new DataException(HttpCodeEnum.DATA_NOT_EXIST);
-        }
-        Map<String,String> map=new HashMap<>();
-        map.put("video_url",one.getVideoUrl());
-        return new ResponseResult().ok(HttpCodeEnum.SUCCESS.getCode(),map,"视频链接获取成功");
+        return videoService.playVideo(videoId);
+    }
+    @GetMapping("/getAllVideo")
+    @ApiOperation("获取所有视频")
+    public ResponseResult getAllVideo(){
+        return videoService.getAllVideo();
     }
 }

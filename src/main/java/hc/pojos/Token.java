@@ -32,5 +32,5 @@ public class Token {
     @TableField(fill=FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
-    private Integer isDelete;
+    private Integer isDeleted;
 }

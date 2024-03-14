@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/user")
 @Api(value="用户登录",tags="用户登录")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Resource
     private IUserService userService;
@@ -23,7 +24,6 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    @CrossOrigin(origins = "*")
     @ApiOperation("用户登录")
     public ResponseResult login(@RequestBody UserDTO userDTO) {
         return userService.login(userDTO);
@@ -35,7 +35,6 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    @CrossOrigin(origins = "*")
     @ApiOperation("用户注册")
     public ResponseResult register(@RequestBody UserDTO userDTO){
         return userService.register(userDTO);
